@@ -2,14 +2,20 @@ import { Elysia, NotFoundError, ValidationError, t } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { RecordInsertSchema, devicesModel, recordsModel } from "./models";
 import { DeviceService, RecordService, type RecordInsert } from "./services";
-import { Database } from "bun:sqlite";
-import { drizzle } from "drizzle-orm/bun-sqlite";
-import { migrate } from "drizzle-orm/bun-sqlite/migrator";
+
+import { drizzle } from "drizzle-orm/libsql";
+import { migrate } from "drizzle-orm/libsql/migrator";
 import { Value } from "@sinclair/typebox/value";
 import { cors } from "@elysiajs/cors";
+import { createClient } from "@libsql/client";
 
-const database = new Database("paperplusplus.db");
-const db = drizzle(database);
+const DB_URL = process.env.DATABASE_URL || "sqlite://paperplusplus.db";
+const client = createClient({
+  url: DB_URL,
+});
+const db = drizzle(client, {
+  logger: true,
+});
 migrate(db, { migrationsFolder: "./drizzle" });
 
 const devices = new Elysia({

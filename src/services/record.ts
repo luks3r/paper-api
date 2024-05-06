@@ -6,9 +6,9 @@ import {
   RecordUpdateSchema,
   RecordInsertSchema,
 } from "../models";
-import type { BunSQLiteDatabase } from "drizzle-orm/bun-sqlite";
 import { RecordsTable } from "../domain/models";
 import type { Static } from "@sinclair/typebox";
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
 
 export type RecordSelect = Static<typeof RecordSelectSchema>;
 export type RecordInsert = Static<typeof RecordInsertSchema>;
@@ -18,7 +18,7 @@ export interface IRecordService
   extends IBaseService<number, RecordSelect, RecordInsert, RecordUpdate> {}
 
 export class RecordService implements IRecordService {
-  constructor(private readonly db: BunSQLiteDatabase) {}
+  constructor(private readonly db: LibSQLDatabase) {}
 
   async getAll(): Promise<RecordSelect[]> {
     return await this.db.select().from(RecordsTable);
@@ -78,6 +78,6 @@ export class RecordService implements IRecordService {
   }
 
   async delete(id: number): Promise<void> {
-    return await this.db.delete(RecordsTable).where(eq(RecordsTable.id, id));
+    await this.db.delete(RecordsTable).where(eq(RecordsTable.id, id));
   }
 }

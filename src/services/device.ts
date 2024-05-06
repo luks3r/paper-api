@@ -6,9 +6,9 @@ import {
   DeviceUpdateSchema,
   DeviceInsertSchema,
 } from "../models";
-import type { BunSQLiteDatabase } from "drizzle-orm/bun-sqlite";
 import { DevicesTable } from "../domain/models";
 import type { Static } from "@sinclair/typebox";
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
 
 export type DeviceSelect = Static<typeof DeviceSelectSchema>;
 export type DeviceInsert = Static<typeof DeviceInsertSchema>;
@@ -18,7 +18,7 @@ export interface IDeviceService
   extends IBaseService<number, DeviceSelect, DeviceInsert, DeviceUpdate> {}
 
 export class DeviceService implements IDeviceService {
-  constructor(private readonly db: BunSQLiteDatabase) {}
+  constructor(private readonly db: LibSQLDatabase) {}
 
   async getAll(): Promise<DeviceSelect[]> {
     return await this.db.select().from(DevicesTable);
@@ -78,6 +78,6 @@ export class DeviceService implements IDeviceService {
   }
 
   async delete(id: number): Promise<void> {
-    return await this.db.delete(DevicesTable).where(eq(DevicesTable.id, id));
+    await this.db.delete(DevicesTable).where(eq(DevicesTable.id, id));
   }
 }

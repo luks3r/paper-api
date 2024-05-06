@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "build": "bun build src/index.ts",
+    "build": "bun build src/index.ts --outdir ./build",
     "start": "NODE_ENV=production bun src/index.ts",
     "test": "bun test",
     "migrate": "drizzle-kit generate:sqlite --schema src/domain"
@@ -20,6 +20,7 @@
     "@elysiajs/cors": "^1.0.2",
     "@elysiajs/eden": "^1.0.11",
     "@elysiajs/swagger": "^1.0.3",
+    "@libsql/client": "^0.6.0",
     "@sinclair/typebox": "^0.32.20",
     "drizzle-orm": "^0.30.7",
     "drizzle-typebox": "^0.1.1",
