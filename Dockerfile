@@ -1,5 +1,5 @@
 FROM oven/bun:latest
 COPY . .
 RUN bun install
-EXPOSE 3030
+EXPOSE 8080
 CMD ["bun", "run", "start"]

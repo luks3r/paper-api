@@ -224,4 +224,5 @@ export const app = new Elysia()
     })
   )
   .group("/api/v1", (api) => api.use(devices).use(records))
-  .listen(3030);
+  .get("/health", () => "OK")
+  .listen(process.env.PORT || 8080);
