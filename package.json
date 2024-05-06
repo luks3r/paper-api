@@ -24,6 +24,7 @@
     "@sinclair/typebox": "^0.32.20",
     "drizzle-orm": "^0.30.7",
     "drizzle-typebox": "^0.1.1",
-    "elysia": "^1.0.13"
+    "elysia": "^1.0.13",
+    "libsql-stateless-easy": "^1.6.8"
   }
 }

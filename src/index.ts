@@ -7,11 +7,19 @@ import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import { Value } from "@sinclair/typebox/value";
 import { cors } from "@elysiajs/cors";
-import { createClient } from "@libsql/client";
+import { createClient } from "libsql-stateless-easy";
 
-const DB_URL = process.env.DATABASE_URL || "sqlite://paperplusplus.db";
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is not set");
+}
+
+if (!process.env.TURSO_TOKEN) {
+  throw new Error("TURSO_TOKEN is not set");
+}
+
 const client = createClient({
-  url: DB_URL,
+  url: process.env.DATABASE_URL,
+  authToken: process.env.TURSO_TOKEN,
 });
 const db = drizzle(client, {
   logger: true,
